@@ -1,9 +1,11 @@
 from dataclasses import dataclass
 from enum import Enum, auto
+from typing import Callable
 
 type State = Enum
 type Alphabet = Enum
 type Word = list[Alphabet]
+type TransitionFunction = Callable[[State, Alphabet], set[State]]
 
 
 def create_state_enum(cardinality: int) -> State:
@@ -16,6 +18,12 @@ def create_alphabet_enum(cardinality: int) -> Alphabet:
 
 @dataclass
 class Transition:
+    """
+    Transition from one state to another on a symbol.
+
+    Relational encoding, equivalent to function: State x Alphabet -> 2^State.
+    """
+
     start: State
     symbol: Alphabet
     end: State

@@ -1,0 +1,25 @@
+name: Build/Lint/Test
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install the latest version of rye
+        uses: eifinger/setup-rye@v4
+        with:
+          enable-cache: true
+      - name: Rye Sync
+        run: rye sync
+      - name: Rye Build
+        run: rye build
+      - name: Rye Lint
+        run: rye lint
+      - name: Rye Test
+        run: rye test

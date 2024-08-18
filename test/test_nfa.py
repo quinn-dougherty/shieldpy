@@ -8,29 +8,6 @@ from shieldpy.nfa import (
 )
 
 
-@pytest.fixture
-def simple_nfa():
-    State = create_state_enum(3)
-    Alphabet = create_alphabet_enum(2)
-
-    return (
-        NFA(
-            states=State,
-            transitions={
-                Transition(State.q0, Alphabet.a, State.q0),
-                Transition(State.q0, Alphabet.b, State.q0),
-                Transition(State.q0, Alphabet.a, State.q1),
-                Transition(State.q1, Alphabet.b, State.q2),
-            },
-            start=State.q0,
-            accept={State.q2},
-            alphabet=Alphabet,
-        ),
-        State,
-        Alphabet,
-    )
-
-
 def test_accepts_valid_strings(simple_nfa):
     nfa, State, Alphabet = simple_nfa
     assert accepts(nfa, [Alphabet.a, Alphabet.b])

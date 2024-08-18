@@ -32,3 +32,5 @@ pluggy==1.5.0
 pytest==8.3.2
 sortedcontainers==2.4.0
     # via hypothesis
+z3-solver==4.13.0.0
+    # via shieldpy

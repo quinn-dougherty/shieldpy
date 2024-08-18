@@ -5,7 +5,9 @@ description = "Add your description here"
 authors = [
     { name = "Quinn Dougherty", email = "quinnd@riseup.net" }
 ]
-dependencies = []
+dependencies = [
+    "z3-solver>=4.13.0.0",
+]
 readme = "README.md"
 requires-python = ">= 3.8"
 
