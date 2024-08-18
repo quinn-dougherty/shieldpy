@@ -1,5 +1,7 @@
-import nfa
 from typing import NewType
+from nfa import NFA, Transition
+from dataclasses import dataclass
+from enum import Enum
 
 # Water Tank Example from Figure 4
 # TODO do we want figure 4 or 5?
@@ -7,15 +9,21 @@ from typing import NewType
 
 Switch = Enum('Switch', ['OPEN', 'CLOSE'])
 
-Level = NewType('Level', int) # Would be cool if I can bound this between 0 and 100
+Level = NewType('Level', int)
 minLevel = Level(0)
 maxLevel = Level(100)
 
 
 WaterTankState = Enum("WaterTankState", ["q_0", "q_b", "q_c", "q_d", "q_e", "q_f"])
 
-WaterTankAlphabet = pass # TODO
+# Ok level is when 1 <= Level <= 99
+WaterTankAlphabet = Enum("WaterTankAlphabet", ["closeAndOkLevel", "openAndOkLevel"])
+
+# TODO rest of transitions
+transitions = {
+    Transition(WaterTankState.q_0, WaterTankAlphabet.closeAndOkLevel, WaterTankState.q_0)
+}
 
 # TODO transitions, add levels, accept, alphabet
 # Is accepting right?
-example = NFA(states = [state.value for state in WaterTankState], transitions = {}, start = Switch.CLOSE, accept = [state.value for state in WaterTankState], alphabet= WaterTankAlphabet)
+example = NFA(states = WaterTankState, transitions = {}, start = Switch.CLOSE, accept = WaterTankState, alphabet= WaterTankAlphabet)
