@@ -16,14 +16,14 @@ maxLevel = Level(100)
 
 WaterTankState = Enum("WaterTankState", ["q_0", "q_b", "q_c", "q_d", "q_e", "q_f"])
 
-# Ok level is when 1 <= Level <= 99
+# An "Ok level" is when 1 <= Level <= 99
 WaterTankAlphabet = Enum("WaterTankAlphabet", ["closeAndOkLevel", "openAndOkLevel"])
 
-# TODO rest of transitions
+# TODO rest of transition
 transitions = {
     Transition(WaterTankState.q_0, WaterTankAlphabet.closeAndOkLevel, WaterTankState.q_0)
 }
 
 # TODO transitions, add levels, accept, alphabet
-# Is accepting right?
-example = NFA(states = WaterTankState, transitions = {}, start = Switch.CLOSE, accept = WaterTankState, alphabet= WaterTankAlphabet)
+example = NFA(states = WaterTankState, transitions = transitions, start = Switch.CLOSE, accept = WaterTankState, alphabet= WaterTankAlphabet)
+
