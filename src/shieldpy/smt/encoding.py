@@ -32,9 +32,9 @@ def encode_transitions(
     transition_func = z3.Function("transition", state_z3, alphabet_z3, state_z3, z3.BoolSort())
     constraints = []
     for t in transitions:
-        s = states[t.start.value]
-        symb = alphabets[t.symbol.value]
-        output = states[t.end.value]
+        s = states[t.start.value - 1]
+        symb = alphabets[t.symbol.value - 1]
+        output = states[t.end.value - 1]
         f = transition_func(s, symb, output)
         constraints.append(f)
 
