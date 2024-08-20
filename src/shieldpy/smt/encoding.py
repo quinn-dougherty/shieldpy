@@ -27,9 +27,9 @@ def encode_transitions(
 ) -> tuple[z3.Function, z3.And]:
     # state_z3 = encode_state_enum(S)
     state_z3, _ = encode_enum_sort(S)
-    alphabet_z3 = encode_enum_sort(A)
+    alphabet_z3, _ = encode_enum_sort(A)
     # alphabet_z3 = encode_alphabet_enum(Alphabet)
-    transition_func = z3.Function("transition", state_z3, alphabet_z3, state_z3, z3.BoolSort(), z3.BoolSort())
+    transition_func = z3.Function("transition", state_z3, alphabet_z3, state_z3)
     constraints = []
     for t in transitions:
         s = state_z3.constructor(t.start.value)
