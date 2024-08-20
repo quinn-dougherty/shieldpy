@@ -26,15 +26,16 @@ def encode_transitions(
     S: Type[Enum], A: Type[Enum], transitions: set[Transition]
 ) -> tuple[z3.Function, z3.And]:
     # state_z3 = encode_state_enum(S)
-    state_z3, _ = encode_enum_sort(S)
-    alphabet_z3, _ = encode_enum_sort(A)
+    state_z3, states = encode_enum_sort(S)
+    alphabet_z3, alphabets= encode_enum_sort(A)
     # alphabet_z3 = encode_alphabet_enum(Alphabet)
-    transition_func = z3.Function("transition", state_z3, alphabet_z3, state_z3)
+    transition_func = z3.Function("transition", state_z3, alphabet_z3, state_z3, z3.BoolSort())
     constraints = []
     for t in transitions:
-        s = state_z3.constructor(t.start.value)
-        symb = alphabet_z3.constructor(t.symbol.value)
-        output = state_z3.constructor(t.end.value)
-        constraints.append(transition_func(s, symb, output))
+        s = states[t.start.value]
+        symb = alphabets[t.symbol.value]
+        output = states[t.end.value]
+        f = transition_func(s, symb, output)
+        constraints.append(f)
 
     return transition_func, z3.And(constraints)
