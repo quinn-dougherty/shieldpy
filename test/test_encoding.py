@@ -15,7 +15,7 @@ def test_encode_state_enum():
 
 
 def test_encode_transitions(simple_state, simple_alphabet, simple_transitions):
-    transition_func, constraints = encode_transitions(
+    transition_func, constraints, states, alphabets = encode_transitions(
         simple_state, simple_alphabet, simple_transitions
     )
     s = z3.Solver()
@@ -23,13 +23,13 @@ def test_encode_transitions(simple_state, simple_alphabet, simple_transitions):
     assert s.check() == z3.sat
     m = s.model()
     for t in simple_transitions:
-        assert m[
-            transition_func(
-                getattr(simple_state, t.start.name),
-                getattr(simple_alphabet, t.symbol.name),
-                True,
+        f = transition_func(
+                states[t.start.value - 1],
+                alphabets[t.symbol.value - 1],
+                states[t.end.value - 1],
+                True
             )
-        ] == getattr(simple_state, t.end.name)
+        assert m[f] == getattr(simple_state, t.end.name)
 
 
 @pytest.mark.skip(reason="Not implemented")
