@@ -1,6 +1,6 @@
 import pytest
 import z3
-from shieldpy.nfa import create_state_enum, create_alphabet_enum, Transition, NFA
+from shieldpy.nfa import create_state_enum
 from shieldpy.smt.encoding import encode_state_enum, encode_transitions
 
 
@@ -62,3 +62,69 @@ def test_z3_function_identity():
     # test on symbolic variables
     y = m.evaluate(f(x))
     assert z3.is_expr(y) and y.decl().name() == x.decl().name()
+
+
+def test_z3_enum_function():
+    """just to learn z3"""
+    # Define two enumeration types
+    ColorType = z3.Datatype("ColorType")
+    ColorType.declare("Red")
+    ColorType.declare("Green")
+    ColorType.declare("Blue")
+    ColorType = ColorType.create()
+
+    ShapeType = z3.Datatype("ShapeType")
+    ShapeType.declare("Circle")
+    ShapeType.declare("Square")
+    ShapeType = ShapeType.create()
+
+    # Define a function from ColorType and ShapeType to Bool
+    property_func = z3.Function("property_func", ColorType, ShapeType, z3.BoolSort())
+
+    s = z3.Solver()
+
+    # Add some rules for the function
+    s.add(property_func(ColorType.Red, ShapeType.Circle) == True)
+    s.add(property_func(ColorType.Green, ShapeType.Square) == True)
+    c = z3.Const("c", ColorType)
+    s.add(
+        z3.ForAll(
+            [c],
+            property_func(c, ShapeType.Square) == True,
+        )
+    )
+    s.add(property_func(ColorType.Blue, ShapeType.Circle) == False)
+
+    assert s.check() == z3.sat
+    m = s.model()
+
+    # Test specific function calls
+    assert m.evaluate(property_func(ColorType.Red, ShapeType.Circle)) == True
+    assert m.evaluate(property_func(ColorType.Green, ShapeType.Square)) == True
+    assert m.evaluate(property_func(ColorType.Blue, ShapeType.Square)) == True
+    assert m.evaluate(property_func(ColorType.Blue, ShapeType.Circle)) == False
+
+    # Test the universal quantifier
+    for color in [ColorType.Red, ColorType.Green, ColorType.Blue]:
+        assert m.evaluate(property_func(color, ShapeType.Square)) == True
+
+
+def test_encode_transitions(simple_state, simple_alphabet, simple_transitions):
+    transition_func, constraints, states, alphabets = encode_transitions(
+        simple_state, simple_alphabet, simple_transitions
+    )
+    s = z3.Solver()
+    s.add(constraints)
+    assert s.check() == z3.sat
+    m = s.model()
+    for t in simple_transitions:
+        start = states[t.start.value - 1]
+        symbol = alphabets[t.symbol.value - 1]
+        end = states[t.end.value - 1]
+        f = transition_func(
+            start,
+            symbol,
+            end,
+        )
+        yval = m.evaluate(f)
+        assert yval

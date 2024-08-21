@@ -1,10 +1,5 @@
-import pytest
 from shieldpy.nfa import (
     accepts,
-    create_state_enum,
-    create_alphabet_enum,
-    Transition,
-    NFA,
 )
 
 
