@@ -24,21 +24,41 @@ def test_encode_transitions(simple_state, simple_alphabet, simple_transitions):
     m = s.model()
     for t in simple_transitions:
         f = transition_func(
-                states[t.start.value - 1],
-                alphabets[t.symbol.value - 1],
-                states[t.end.value - 1],
-                True
-            )
+            states[t.start.value - 1],
+            alphabets[t.symbol.value - 1],
+            states[t.end.value - 1],
+            True,
+        )
         assert m[f] == getattr(simple_state, t.end.name)
 
 
-@pytest.mark.skip(reason="Not implemented")
 def test_z3_function_sanity():
+    """ "just to learn z3"""
     s = z3.Solver()
     f = z3.Function("f", z3.IntSort(), z3.IntSort())
     x = z3.Int("x")
     s.add(f(x) == x)
     assert s.check() == z3.sat
     m = s.model()
-    y = f(x)
-    assert m[y] == x
+    x_val = m.evaluate(x)
+    y = f(x_val)
+    y_val = m.evaluate(y)
+    assert y_val == x_val
+
+
+def test_z3_function_identity():
+    """just to learn z3"""
+    s = z3.Solver()
+    f = z3.Function("f", z3.IntSort(), z3.IntSort())
+    x = z3.Int("x")
+    s.add(z3.ForAll(x, f(x) == x))
+    assert s.check() == z3.sat
+    m = s.model()
+
+    # test on literal consts
+    for i in range(-5, 6):
+        assert m.evaluate(f(i)) == i
+
+    # test on symbolic variables
+    y = m.evaluate(f(x))
+    assert z3.is_expr(y) and y.decl().name() == x.decl().name()

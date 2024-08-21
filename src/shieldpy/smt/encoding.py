@@ -25,11 +25,11 @@ def encode_enum_sort(S: Type[Enum]) -> z3.Datatype:
 def encode_transitions(
     S: Type[Enum], A: Type[Enum], transitions: set[Transition]
 ) -> tuple[z3.Function, z3.And, list[z3.Datatype], list[z3.Datatype]]:
-    # state_z3 = encode_state_enum(S)
     state_z3, states = encode_enum_sort(S)
-    alphabet_z3, alphabets= encode_enum_sort(A)
-    # alphabet_z3 = encode_alphabet_enum(Alphabet)
-    transition_func = z3.Function("transition", state_z3, alphabet_z3, state_z3, z3.BoolSort())
+    alphabet_z3, alphabets = encode_enum_sort(A)
+    transition_func = z3.Function(
+        "transition", state_z3, alphabet_z3, state_z3, z3.BoolSort()
+    )
     constraints = []
     for t in transitions:
         s = states[t.start.value - 1]
