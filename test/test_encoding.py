@@ -1,7 +1,7 @@
 import pytest
-import z3
-from shieldpy.nfa import create_state_enum
+from shieldpy.automata.util import create_state_enum
 from shieldpy.smt.encoding import encode_state_enum, encode_transitions
+import z3
 
 
 @pytest.mark.skip(reason="idk how to clear z3 declarations skipping for now")

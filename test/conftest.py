@@ -1,9 +1,11 @@
 import pytest
-from shieldpy.nfa import (
-    create_state_enum,
-    create_alphabet_enum,
+from shieldpy.automata.nondeterministic_finite import (
     Transition,
     NFA,
+)
+from shieldpy.automata.util import (
+    create_state_enum,
+    create_alphabet_enum,
 )
 
 

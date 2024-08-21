@@ -21,7 +21,12 @@ dev-dependencies = [
     "pytest>=8.3.2",
     "hypothesis>=6.111.1",
     "black>=24.8.0",
+    "pyright>=1.1.377",
 ]
+[tool.pyright]
+include = ["src"]
+venvPath = "./.venv"
+venv = "./.venv"
 
 [tool.hatch.metadata]
 allow-direct-references = true

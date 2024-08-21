@@ -1,7 +1,8 @@
 from enum import Enum
 from typing import Type
+
+from shieldpy.automata.nondeterministic_finite import Transition
 import z3
-from shieldpy.nfa import Transition
 
 
 def encode_state_enum(S: Type[Enum]) -> z3.Datatype:
