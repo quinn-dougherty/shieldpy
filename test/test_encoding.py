@@ -14,24 +14,6 @@ def test_encode_state_enum():
     assert s.check() == z3.sat
 
 
-def test_encode_transitions(simple_state, simple_alphabet, simple_transitions):
-    transition_func, constraints, states, alphabets = encode_transitions(
-        simple_state, simple_alphabet, simple_transitions
-    )
-    s = z3.Solver()
-    s.add(constraints)
-    assert s.check() == z3.sat
-    m = s.model()
-    for t in simple_transitions:
-        f = transition_func(
-            states[t.start.value - 1],
-            alphabets[t.symbol.value - 1],
-            states[t.end.value - 1],
-            True,
-        )
-        assert m[f] == getattr(simple_state, t.end.name)
-
-
 def test_z3_function_sanity():
     """ "just to learn z3"""
     s = z3.Solver()
@@ -84,29 +66,29 @@ def test_z3_enum_function():
     s = z3.Solver()
 
     # Add some rules for the function
-    s.add(property_func(ColorType.Red, ShapeType.Circle) == True)
-    s.add(property_func(ColorType.Green, ShapeType.Square) == True)
+    s.add(property_func(ColorType.Red, ShapeType.Circle))
+    s.add(property_func(ColorType.Green, ShapeType.Square))
     c = z3.Const("c", ColorType)
     s.add(
         z3.ForAll(
             [c],
-            property_func(c, ShapeType.Square) == True,
+            property_func(c, ShapeType.Square),
         )
     )
-    s.add(property_func(ColorType.Blue, ShapeType.Circle) == False)
+    s.add(z3.Not(property_func(ColorType.Blue, ShapeType.Circle)))
 
     assert s.check() == z3.sat
     m = s.model()
 
     # Test specific function calls
-    assert m.evaluate(property_func(ColorType.Red, ShapeType.Circle)) == True
-    assert m.evaluate(property_func(ColorType.Green, ShapeType.Square)) == True
-    assert m.evaluate(property_func(ColorType.Blue, ShapeType.Square)) == True
-    assert m.evaluate(property_func(ColorType.Blue, ShapeType.Circle)) == False
+    assert m.evaluate(property_func(ColorType.Red, ShapeType.Circle))
+    assert m.evaluate(property_func(ColorType.Green, ShapeType.Square))
+    assert m.evaluate(property_func(ColorType.Blue, ShapeType.Square))
+    assert not m.evaluate(property_func(ColorType.Blue, ShapeType.Circle))
 
     # Test the universal quantifier
     for color in [ColorType.Red, ColorType.Green, ColorType.Blue]:
-        assert m.evaluate(property_func(color, ShapeType.Square)) == True
+        assert m.evaluate(property_func(color, ShapeType.Square))
 
 
 def test_encode_transitions(simple_state, simple_alphabet, simple_transitions):
