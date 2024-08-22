@@ -5,7 +5,9 @@ description = "Add your description here"
 authors = [
     { name = "Quinn Dougherty", email = "quinnd@riseup.net" }
 ]
-dependencies = []
+dependencies = [
+    "z3-solver>=4.13.0.0",
+]
 readme = "README.md"
 requires-python = ">= 3.8"
 
@@ -19,7 +21,12 @@ dev-dependencies = [
     "pytest>=8.3.2",
     "hypothesis>=6.111.1",
     "black>=24.8.0",
+    "pyright>=1.1.377",
 ]
+[tool.pyright]
+include = ["src"]
+venvPath = "./.venv"
+venv = "./.venv"
 
 [tool.hatch.metadata]
 allow-direct-references = true

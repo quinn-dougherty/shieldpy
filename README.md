@@ -11,5 +11,3 @@ rye sync
 rye build
 rye test
 ```
-
-`
