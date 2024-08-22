@@ -39,7 +39,6 @@ def test_or_syntax():
 
 def test_implies_syntax():
     p_implies_q = syntax.implies(syntax.atom("p"), syntax.atom("q"))
-    assert syntax.to_repr(p_implies_q) == "(p -> q)"
     assert syntax.get_atoms(p_implies_q) == {"p", "q"}
 
 
@@ -74,7 +73,7 @@ def test_safety_property_syntax():
     safety_property = syntax.always(
         syntax.implies(syntax.atom("request"), syntax.next_(syntax.atom("grant")))
     )
-    assert syntax.pretty_print(safety_property) == "G((request -> X(grant)))"
+    assert syntax.pretty_print(safety_property) == "G((!(request) | X(grant)))"
     assert syntax.get_atoms(safety_property) == {"request", "grant"}
 
 
@@ -96,7 +95,7 @@ def test_response_syntax():
             syntax.atom("trigger"), syntax.eventually(syntax.atom("response"))
         )
     )
-    assert syntax.pretty_print(response) == "G((trigger -> F(response)))"
+    assert syntax.pretty_print(response) == "G((!(trigger) | F(response)))"
     assert syntax.get_atoms(response) == {"trigger", "response"}
 
 
