@@ -1,5 +1,5 @@
 from typing import NewType
-from nfa import NFA, Transition
+from shieldpy.automata.nondeterministic_finite import NFA, Transition
 from dataclasses import dataclass
 from enum import Enum
 
@@ -25,5 +25,4 @@ transitions = {
 }
 
 # TODO transitions, add levels, accept, alphabet
-example = NFA(states = WaterTankState, transitions = transitions, start = Switch.CLOSE, accept = WaterTankState, alphabet= WaterTankAlphabet)
-
+watertank_nfa = NFA(states = WaterTankState, transitions = transitions, start = Switch.CLOSE, accept = WaterTankState, alphabet= WaterTankAlphabet)

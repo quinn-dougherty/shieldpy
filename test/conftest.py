@@ -7,7 +7,7 @@ from shieldpy.automata.util import (
     create_state_enum,
     create_alphabet_enum,
 )
-
+from shieldpy import watertank
 
 @pytest.fixture(scope="session")
 def simple_state():
@@ -42,3 +42,7 @@ def simple_nfa(simple_state, simple_alphabet, simple_transitions):
         simple_state,
         simple_alphabet,
     )
+
+@pytest.fixture(scope="session")
+def watertank_nfa():
+    return watertank.watertank_nfa
