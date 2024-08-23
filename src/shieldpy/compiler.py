@@ -11,6 +11,11 @@ from shieldpy.logic.syntax import (
 
 
 def compile_spec(formula: LTLFormula) -> NFA:
+    """
+    Compiles an LTL formula into an NFA.
+
+    It's supposed to land in buchi automata, but we're gonna try to cheat
+    """
     state_counter = 0
     alphabet = list()
     states = list()
