@@ -1,6 +1,5 @@
 from typing import NewType
 from shieldpy.automata.nondeterministic_finite import NFA, Transition
-from dataclasses import dataclass
 from enum import Enum
 
 # Water Tank Example from Figure 4
@@ -8,6 +7,7 @@ from enum import Enum
 # TODO move this to something like examples/
 
 Switch = Enum('Switch', ['OPEN', 'CLOSE'])
+
 
 Level = NewType('Level', int)
 minLevel = Level(0)
@@ -21,8 +21,17 @@ WaterTankAlphabet = Enum("WaterTankAlphabet", ["closeAndOkLevel", "openAndOkLeve
 
 # TODO rest of transition
 transitions = {
-    Transition(WaterTankState.q_0, WaterTankAlphabet.closeAndOkLevel, WaterTankState.q_0)
+    Transition(
+        WaterTankState.q_0,
+        WaterTankAlphabet.closeAndOkLevel,
+        WaterTankState.q_0
+    )
 }
 
-# TODO transitions, add levels, accept, alphabet
-watertank_nfa = NFA(states = WaterTankState, transitions = transitions, start = Switch.CLOSE, accept = WaterTankState, alphabet= WaterTankAlphabet)
+watertank_nfa = NFA(
+    states = WaterTankState,
+    transitions = transitions,
+    start = Switch.CLOSE,
+    accept = WaterTankState,
+    alphabet= WaterTankAlphabet
+)
