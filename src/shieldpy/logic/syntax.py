@@ -7,7 +7,6 @@ class Operator(Enum):
     AND = auto()
     OR = auto()
     NOT = auto()
-    IMPLIES = auto()
     UNTIL = auto()
 
 
@@ -59,7 +58,7 @@ def or_(left: LTLFormula, right: LTLFormula) -> BinaryOp:
 
 
 def implies(left: LTLFormula, right: LTLFormula) -> BinaryOp:
-    return BinaryOp(Operator.IMPLIES, left, right)
+    return BinaryOp(Operator.OR, UnaryOp(Operator.NOT, left), right)
 
 
 def until(left: LTLFormula, right: LTLFormula) -> BinaryOp:
@@ -109,8 +108,6 @@ def to_repr(formula: LTLFormula) -> str:
                     return f"({left_str} & {right_str})"
                 case Operator.OR:
                     return f"({left_str} | {right_str})"
-                case Operator.IMPLIES:
-                    return f"({left_str} -> {right_str})"
                 case Operator.UNTIL:
                     return f"({left_str} U {right_str})"
                 case _:
@@ -142,8 +139,6 @@ def pretty_print(formula: LTLFormula) -> str:
             return f"({pretty_print(left)} & {pretty_print(right)})"
         case BinaryOp(Operator.OR, left, right):
             return f"({pretty_print(left)} | {pretty_print(right)})"
-        case BinaryOp(Operator.IMPLIES, left, right):
-            return f"({pretty_print(left)} -> {pretty_print(right)})"
         case BinaryOp(Operator.UNTIL, left, right):
             return f"({pretty_print(left)} U {pretty_print(right)})"
         case _:

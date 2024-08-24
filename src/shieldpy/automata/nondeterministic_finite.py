@@ -1,9 +1,8 @@
 from dataclasses import dataclass
-from typing import FrozenSet
 from shieldpy.automata.types import State, Alphabet, Word
 
 
-@dataclass
+@dataclass(frozen=True)
 class Transition:
     """
     Transition from one state to another on a symbol.
@@ -19,13 +18,13 @@ class Transition:
         return hash((self.start, self.symbol, self.end))
 
 
-@dataclass
+@dataclass(frozen=True)
 class NFA:
-    states: State
-    transitions: FrozenSet[Transition]
-    start: State
-    accept: FrozenSet[State]
-    alphabet: Alphabet
+    states: type[State]
+    transitions: frozenset[Transition]
+    start: type[State]
+    accept: frozenset[State]
+    alphabet: type[Alphabet]
 
     def accepts(self, word: Word) -> bool:
         current_states = {self.start}
