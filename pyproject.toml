@@ -24,6 +24,7 @@ dev-dependencies = [
     "hypothesis>=6.111.1",
     "black>=24.8.0",
     "pyright>=1.1.377",
+    "visual-automata>=1.1.1"
 ]
 [tool.pyright]
 include = ["src"]

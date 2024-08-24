@@ -9,7 +9,7 @@ from shieldpy.logic.syntax import (
     Operator,
 )
 from shieldpy.compiler import compile_spec
-
+from shieldpy.automata.visualize import visualize_nfa
 
 def test_atom():
     formula = Atom("p")
@@ -47,6 +47,9 @@ def test_not_operator():
 def test_and_operator():
     formula = BinaryOp(Operator.AND, Atom("p"), Atom("q"))
     nfa = compile_spec(formula)
+
+    # FIXME Debugging
+    visualize_nfa(nfa)
 
     assert isinstance(nfa, NFA), "compile_spec should return an NFA instance"
     assert len(nfa.states) == 4, "AND operator NFA should have 4 states"
