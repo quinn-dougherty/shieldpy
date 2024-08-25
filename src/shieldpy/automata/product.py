@@ -1,4 +1,4 @@
-from shieldpy.automata.nondeterministic_finite import NFA
+from shieldpy.automata.nondeterministic_finite import NFA, Transition
 from shieldpy.logic.syntax import LTLFormula
 from shieldpy.compiler import compile_spec
 from shieldpy.automata.game import SafetyGame
@@ -11,21 +11,32 @@ def product(nfa1: NFA, nfa2: NFA) -> SafetyGame:
     The product of two NFAs is another NFA that accepts the intersection of the
     languages of the two NFAs.
     """
-    states = {(s1, s2) for s1 in nfa1.states for s2 in nfa2.states}
-    alphabets = nfa1.alphabet.union(nfa2.alphabet)
-    initial_states = {(nfa1.start, nfa2.start)}
-    safe_states = {(s1, s2) for s1 in nfa1.accept for s2 in nfa2.accept}
+    states = frozenset((s1, s2) for s1 in nfa1.states for s2 in nfa2.states)
+    # TODO The alphabet should be be the intersection so they should be using the same Enum?
+    alphabets = nfa1.alphabet.intersect(nfa2.alphabet)
+    initial_states = (nfa1.start, nfa2.start)
+    safe_states = frozenset((s1, s2) for s1 in nfa1.accept for s2 in nfa2.accept)
 
-    transitions = {} # TODO
+    transitions = []
+    for t1 in nfa1.transitions:
+        for t2 in nfa2.transitions:
+            if t1.symbol == t2.symbol:
+                transitions.append(Transition(
+                    start=(t1.start, t2.start),
+                    symbol=t1.symbol,
+                    end=(t1.end, t2.end)
+                ))
 
     return prune(SafetyGame(states, transitions, initial_states, safe_states, alphabets))
 
 
-def prune(nfa: NFA) -> NFA:
+def prune(nfa: SafetyGame) -> SafetyGame:
     """
-    Prunes the NFA by removing unreachable states.
+    Prunes the product NFA by removing unreachable states.
     """
-    pass
+    # Do a search and mark
+    # TODO
+    return nfa
 
 def create_game(environment: NFA, spec: LTLFormula) -> NFA:
     """

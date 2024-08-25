@@ -9,7 +9,7 @@ class SafetyGame:
     transitions: frozenset[Transition]
     initial_states: frozenset[tuple[State, State]]
     safe_states: frozenset[tuple[State, State]]
-    alphabet: frozenset[Union[Alphabet, Alphabet]]
+    alphabet: frozenset[Alphabet]
 
     def solve(self) -> set[tuple[State, State]]:
         # Implement the safety game solving algorithm here
