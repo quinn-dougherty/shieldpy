@@ -34,8 +34,8 @@ def prune(nfa: SafetyGame) -> SafetyGame:
     """
     Prunes the product NFA by removing unreachable states.
     """
-    # Do a search and mark
-    # TODO
+    # TODO Do a search and mark reachable states
+    # TODO not sure if we need this right away?
     return nfa
 
 def create_game(environment: NFA, spec: LTLFormula) -> NFA:
