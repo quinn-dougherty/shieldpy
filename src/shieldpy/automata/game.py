@@ -1,5 +1,6 @@
 from dataclasses import dataclass
-from shieldpy.automata.types import State, Alphabet
+from shieldpy.automata.types import State, Alphabet, Union, Transition
+
 
 
 @dataclass
@@ -8,7 +9,7 @@ class SafetyGame:
     transitions: frozenset[Transition]
     initial_states: frozenset[tuple[State, State]]
     safe_states: frozenset[tuple[State, State]]
-    alphabet: frozenset[Alphabet]
+    alphabet: frozenset[Union[Alphabet, Alphabet]]
 
     def solve(self) -> set[tuple[State, State]]:
         # Implement the safety game solving algorithm here
