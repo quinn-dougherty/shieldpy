@@ -1,6 +1,5 @@
 from dataclasses import dataclass
-from shieldpy.automata.types import State, Alphabet, Union, Transition
-
+from shieldpy.automata.types import State, Alphabet, Transition
 
 
 @dataclass

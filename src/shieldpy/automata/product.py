@@ -2,7 +2,7 @@ from shieldpy.automata.nondeterministic_finite import NFA, Transition
 from shieldpy.logic.syntax import LTLFormula
 from shieldpy.compiler import compile_spec
 from shieldpy.automata.game import SafetyGame
-from aenum import IntEnum
+
 
 def product(nfa1: NFA, nfa2: NFA) -> SafetyGame:
     """
@@ -21,13 +21,17 @@ def product(nfa1: NFA, nfa2: NFA) -> SafetyGame:
     for t1 in nfa1.transitions:
         for t2 in nfa2.transitions:
             if t1.symbol == t2.symbol:
-                transitions.append(Transition(
-                    start=(t1.start, t2.start),
-                    symbol=t1.symbol,
-                    end=(t1.end, t2.end)
-                ))
+                transitions.append(
+                    Transition(
+                        start=(t1.start, t2.start),
+                        symbol=t1.symbol,
+                        end=(t1.end, t2.end),
+                    )
+                )
 
-    return prune(SafetyGame(states, transitions, initial_states, safe_states, alphabets))
+    return prune(
+        SafetyGame(states, transitions, initial_states, safe_states, alphabets)
+    )
 
 
 def prune(nfa: SafetyGame) -> SafetyGame:
@@ -37,6 +41,7 @@ def prune(nfa: SafetyGame) -> SafetyGame:
     # TODO Do a search and mark reachable states
     # TODO not sure if we need this right away?
     return nfa
+
 
 def create_game(environment: NFA, spec: LTLFormula) -> NFA:
     """
