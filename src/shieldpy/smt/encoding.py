@@ -44,7 +44,7 @@ def encode_nfa_transitions(
 
     return transition_func, z3.And(constraints), states, alphabets
 
-def encode_nfa(nfa: nfa.NFA) -> tuple[z3.Function, z3.And, list[z3.Datatype], list[z3.Datatype]:
+def encode_nfa(nfa: nfa.NFA) -> tuple[z3.Function, z3.And, list[z3.Datatype], list[z3.Datatype]]:
    return encode_nfa_transitions(nfa.states, nfa.alphabet, nfa.transitions)
 
 def encode_enum_pairs_sort(S: (Type[Enum], Type[Enum])) -> z3.Datatype:

@@ -1,6 +1,6 @@
 import pytest
 from shieldpy.automata.util import create_state_enum
-from shieldpy.smt.encoding import encode_state_enum, encode_transitions
+from shieldpy.smt.encoding import encode_state_enum, encode_nfa_transitions
 import z3
 
 
@@ -91,8 +91,8 @@ def test_z3_enum_function():
         assert m.evaluate(property_func(color, ShapeType.Square))
 
 
-def test_encode_transitions(simple_state, simple_alphabet, simple_transitions):
-    transition_func, constraints, states, alphabets = encode_transitions(
+def test_encode_nfa_transitions(simple_state, simple_alphabet, simple_transitions):
+    transition_func, constraints, states, alphabets = encode_nfa_transitions(
         simple_state, simple_alphabet, simple_transitions
     )
     s = z3.Solver()
