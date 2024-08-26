@@ -7,6 +7,7 @@ from shieldpy.automata.util import (
     create_state_enum,
     create_alphabet_enum,
 )
+from shieldpy.logic.syntax import Atom, always, next_, implies
 
 
 @pytest.fixture(scope="session")
@@ -42,3 +43,10 @@ def simple_nfa(simple_state, simple_alphabet, simple_transitions):
         simple_state,
         simple_alphabet,
     )
+
+
+@pytest.fixture(scope="session")
+def simple_spec():
+    a = Atom("a")
+    b = Atom("b")
+    return always(implies(a, next_(b)))
