@@ -27,7 +27,7 @@ def encode_enum_sort(S: Type[Enum]) -> z3.Datatype:
 
 
 def encode_nfa_transitions(
-      S: Type[Enum], A: Type[Enum], transitions: set[nfa.Transition]
+    S: Type[Enum], A: Type[Enum], transitions: set[nfa.Transition]
 ) -> tuple[z3.Function, z3.And, list[z3.Datatype], list[z3.Datatype]]:
     state_z3, states = encode_enum_sort(S)
     alphabet_z3, alphabets = encode_enum_sort(A)
@@ -44,14 +44,21 @@ def encode_nfa_transitions(
 
     return transition_func, z3.And(constraints), states, alphabets
 
-def encode_nfa(nfa: nfa.NFA) -> tuple[z3.Function, z3.And, list[z3.Datatype], list[z3.Datatype]]:
-   return encode_nfa_transitions(nfa.states, nfa.alphabet, nfa.transitions)
 
-def encode_enum_pairs_sort(S: (Type[Enum], Type[Enum])) -> z3.Datatype:
-    return z3.EnumSort(f"{S[0].__name__}{S[1].__name__}", [f"{s1.name}{s2.name}" for (s1, s2) in S])
+def encode_nfa(
+    nfa: nfa.NFA,
+) -> tuple[z3.Function, z3.And, list[z3.Datatype], list[z3.Datatype]]:
+    return encode_nfa_transitions(nfa.states, nfa.alphabet, nfa.transitions)
 
-def encode_safety_game_transitions(
-      S: (Type[Enum], Type[Enum]), A: Type[Enum], transitions: set[game.Transition]
+
+def encode_enum_pairs_sort(S: tuple[Type[Enum], Type[Enum]]) -> z3.Datatype:
+    return z3.EnumSort(
+        f"{S[0].__name__}{S[1].__name__}", [f"{s1.name}{s2.name}" for (s1, s2) in S]
+    )
+
+
+def encode_safetygame_transitions(
+    S: tuple[Type[Enum], Type[Enum]], A: Type[Enum], transitions: set[game.Transition]
 ) -> tuple[z3.Function, z3.And, list[z3.Datatype], list[z3.Datatype]]:
     state_z3, states = encode_enum_pairs_sort(S)
     alphabet_z3, alphabets = encode_enum_sort(A)
@@ -67,3 +74,9 @@ def encode_safety_game_transitions(
         constraints.append(f)
 
     return transition_func, z3.And(constraints), states, alphabets
+
+
+def encode_safetygame(
+    g: game.SafetyGame,
+) -> tuple[z3.Function, z3.And, list[z3.Datatype], list[z3.Datatype]]:
+    return encode_safetygame_transitions(g.states, g.alphabet, g.transitions)

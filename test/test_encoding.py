@@ -91,7 +91,7 @@ def test_z3_enum_function():
         assert m.evaluate(property_func(color, ShapeType.Square))
 
 
-def test_encode_nfa_transitions(simple_state, simple_alphabet, simple_transitions):
+def test_encode_transitions(simple_state, simple_alphabet, simple_transitions):
     transition_func, constraints, states, alphabets = encode_nfa_transitions(
         simple_state, simple_alphabet, simple_transitions
     )

@@ -6,6 +6,7 @@ from shieldpy.automata.util import (
 from shieldpy.automata import nondeterministic_finite as nfa
 from shieldpy.automata.nondeterministic_finite import NFA
 from shieldpy.automata import game
+from shieldpy.logic.syntax import Atom, always, next_, implies
 
 @pytest.fixture(scope="session")
 def simple_state():
@@ -66,3 +67,9 @@ def simple_nfa_2(simple_state_2, simple_alphabet, simple_transitions_2):
         simple_alphabet,
     )
 
+
+@pytest.fixture(scope="session")
+def simple_spec():
+    a = Atom("a")
+    b = Atom("b")
+    return always(implies(a, next_(b)))
