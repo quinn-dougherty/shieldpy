@@ -41,31 +41,23 @@ def simple_transitions_2(simple_state_2, simple_alphabet):
 
 @pytest.fixture(scope="session")
 def simple_nfa(simple_state, simple_alphabet, simple_transitions):
-    return (
-        NFA(
+    return NFA(
             states=simple_state,
             transitions=simple_transitions,
             start=simple_state.q0,
             accept={simple_state.q2},
             alphabet=simple_alphabet,
-        ),
-        simple_state,
-        simple_alphabet,
-    )
+        )
 
 @pytest.fixture(scope="session")
 def simple_nfa_2(simple_state_2, simple_alphabet, simple_transitions_2):
-    return (
-        NFA(
+    return NFA(
             states=simple_state_2,
             transitions=simple_transitions_2,
             start=simple_state_2.p0,
             accept={simple_state_2.p2},
             alphabet=simple_alphabet,
-        ),
-        simple_state_2,
-        simple_alphabet,
-    )
+        )
 
 
 @pytest.fixture(scope="session")
