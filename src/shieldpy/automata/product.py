@@ -12,8 +12,9 @@ def product(nfa1: NFA, nfa2: NFA) -> SafetyGame:
     languages of the two NFAs.
     """
     states = frozenset((s1, s2) for s1 in nfa1.states for s2 in nfa2.states)
-    # TODO The alphabet should be be the intersection so they should be using the same Enum?
-    alphabets = nfa1.alphabet.intersect(nfa2.alphabet)
+    # TODO The alphabet should be the intersection
+    # However we use the same enum so I think we can use the alphabet of any nfa?
+    alphabets = nfa1.alphabet
     initial_states = (nfa1.start, nfa2.start)
     safe_states = frozenset((s1, s2) for s1 in nfa1.accept for s2 in nfa2.accept)
 
