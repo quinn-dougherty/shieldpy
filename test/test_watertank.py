@@ -2,9 +2,8 @@ from shieldpy.environments.watertank import watertank_nfa, WaterTankAlphabet, Wa
 
 def test_accepts_valid_strings(watertank_nfa):
     nfa, State, Alphabet = watertank_nfa
-    assert nfa.accepts([Alphabet.a, Alphabet.b])
-    assert nfa.accepts([Alphabet.a, Alphabet.a, Alphabet.b])
-    assert nfa.accepts([Alphabet.b, Alphabet.a, Alphabet.b])
+    assert nfa.accepts([])
+    assert nfa.accepts([Alphabet.CLOSE_AND_OK_LEVEL])
 
 
 def test_rejects_invalid_strings(simple_nfa):

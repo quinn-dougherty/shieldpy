@@ -13,12 +13,9 @@ from enum import Enum
 
 # We define a water tank system with a switch that can be either open or closed
 
-
-
 Level = NewType('Level', int)
 minLevel = Level(0)
 maxLevel = Level(100)
-
 
 WaterTankState = Enum("WaterTankState", ["q_a", "q_b", "q_c", "q_d", "q_e", "q_f"])
 
