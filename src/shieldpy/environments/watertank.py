@@ -69,9 +69,11 @@ transitions = frozenset([
 watertank_nfa = NFA(
     states = WaterTankState,
     transitions = transitions,
-    start = frozenset([WaterTankState.q_a]),
-    accept = WaterTankState,
+    start = WaterTankState.q_a,
+    accept = frozenset([e for e in WaterTankState]),
     alphabet= WaterTankAlphabet
 )
+
+# TODO create LTL spec
 
 # Now define a world model NFA for [INSERT ]
