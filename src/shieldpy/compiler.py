@@ -75,27 +75,26 @@ def compile_spec(formula: LTLFormula) -> NFA:
             case BinaryOp():
                 raise ValueError(f"Unsupported binary operator: {f.op}")
 
-            case _:
-                raise ValueError(f"Unsupported formula type: {type(f)}")
-
     start_state = new_state()
     final_state = new_state()
-    accept_states.add(final_state)
 
     process_formula(formula, start_state, final_state)
 
     States = Enum("States", states)
-    Alphabet = Enum("Alphabet", alphabet)
+    Alphabet = Enum("Alphabet", list(set(alphabet)))
     transitions = {
         Transition(
             getattr(States, s), getattr(Alphabet, letter), getattr(States, output)
         )
         for s, letter, output in transitions_staging
     }
+    start_state = getattr(States, start_state)
+    final_state = getattr(States, final_state)
+    accept_states.add(final_state)
     return NFA(
         states=States,
         transitions=frozenset(transitions),
-        start=getattr(States, start_state),
+        start=start_state,
         accept=frozenset(accept_states),
         alphabet=Alphabet,
     )

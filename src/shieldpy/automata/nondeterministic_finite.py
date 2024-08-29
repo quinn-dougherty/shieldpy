@@ -28,16 +28,14 @@ class NFA:
 
     def accepts(self, word: Word) -> bool:
         current_states = {self.start}
-
         for symbol in word:
             next_states = set()
             for state in current_states:
                 for transition in self.transitions:
-                    if transition.start == state and transition.symbol == symbol:
+                    if transition.start == state and transition.symbol is symbol:
                         next_states.add(transition.end)
             current_states = next_states
 
             if not current_states:
                 return False
-
-        return any(state in self.accept for state in current_states)
+        return any(current_state in self.accept for current_state in current_states)

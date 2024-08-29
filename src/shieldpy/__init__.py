@@ -7,7 +7,6 @@ from shieldpy.compiler import compile_spec
 
 
 def main() -> str:
-
     # Example usage
     formula = BinaryOp(Operator.UNTIL, Atom("p"), Atom("q"))
 
