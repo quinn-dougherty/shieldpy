@@ -28,6 +28,41 @@ transitions = frozenset([
         WaterTankState.q_a,
         WaterTankAlphabet.CLOSE_AND_OK_LEVEL,
         WaterTankState.q_a
+    ),
+    Transition(
+        WaterTankState.q_a,
+        WaterTankAlphabet.OPEN_AND_OK_LEVEL,
+        WaterTankState.q_b
+    ),
+    Transition(
+        WaterTankState.q_b,
+        WaterTankAlphabet.OPEN_AND_OK_LEVEL,
+        WaterTankState.q_c
+    ),
+    Transition(
+        WaterTankState.q_c,
+        WaterTankAlphabet.OPEN_AND_OK_LEVEL,
+        WaterTankState.q_d
+    ),
+    Transition(
+        WaterTankState.q_d,
+        WaterTankAlphabet.OPEN_AND_OK_LEVEL,
+        WaterTankState.q_d
+    ),
+    Transition(
+        WaterTankState.q_d,
+        WaterTankAlphabet.CLOSE_AND_OK_LEVEL,
+        WaterTankState.q_e
+    ),
+    Transition(
+        WaterTankState.q_e,
+        WaterTankAlphabet.CLOSE_AND_OK_LEVEL,
+        WaterTankState.q_f
+    ),
+    Transition(
+        WaterTankState.q_f,
+        WaterTankAlphabet.CLOSE_AND_OK_LEVEL,
+        WaterTankState.q_a
     )
 ])
 
