@@ -20,24 +20,24 @@ minLevel = Level(0)
 maxLevel = Level(100)
 
 
-WaterTankState = Enum("WaterTankState", ["q_0", "q_b", "q_c", "q_d", "q_e", "q_f"])
+WaterTankState = Enum("WaterTankState", ["q_a", "q_b", "q_c", "q_d", "q_e", "q_f"])
 
 # An "Ok level" is when 1 <= Level <= 99
 WaterTankAlphabet = Enum("WaterTankAlphabet", ["CLOSE_AND_OK_LEVEL", "OPEN_AND_OK_LEVEL"])
 
 # TODO rest of transition
-transitions = {
+transitions = frozenset([
     Transition(
-        WaterTankState.q_0,
+        WaterTankState.q_a,
         WaterTankAlphabet.CLOSE_AND_OK_LEVEL,
-        WaterTankState.q_0
+        WaterTankState.q_a
     )
-}
+])
 
 watertank_nfa = NFA(
     states = WaterTankState,
     transitions = transitions,
-    start = Switch.CLOSE,
+    start = frozenset([WaterTankState.q_a]),
     accept = WaterTankState,
     alphabet= WaterTankAlphabet
 )

@@ -1,7 +1,7 @@
-from shieldpy.watertank import watertank_nfa, WaterTankAlphabet, WaterTankState
+from shieldpy.environments.watertank import watertank_nfa, WaterTankAlphabet, WaterTankState
 
-def test_accepts_valid_strings(simple_nfa):
-    nfa, State, Alphabet = simple_nfa
+def test_accepts_valid_strings(watertank_nfa):
+    nfa, State, Alphabet = watertank_nfa
     assert nfa.accepts([Alphabet.a, Alphabet.b])
     assert nfa.accepts([Alphabet.a, Alphabet.a, Alphabet.b])
     assert nfa.accepts([Alphabet.b, Alphabet.a, Alphabet.b])

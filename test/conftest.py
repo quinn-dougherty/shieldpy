@@ -3,7 +3,7 @@ from shieldpy.automata.util import (
     create_state_enum,
     create_alphabet_enum,
 )
-from shieldpy import watertank
+from shieldpy.environments import watertank
 from shieldpy.automata import nondeterministic_finite as nfa
 from shieldpy.automata.nondeterministic_finite import NFA
 from shieldpy.automata import game
@@ -56,7 +56,7 @@ def simple_nfa(simple_state, simple_alphabet, simple_transitions):
 
 @pytest.fixture(scope="session")
 def watertank_nfa():
-    return watertank.watertank_nfa
+    return watertank.watertank_nfa, watertank.WaterTankState, watertank.WaterTankAlphabet
 
 @pytest.fixture(scope="session")
 def simple_nfa_2(simple_state_2, simple_alphabet, simple_transitions_2):
