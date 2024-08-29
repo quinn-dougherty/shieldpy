@@ -51,16 +51,10 @@ def encode_nfa(
     return encode_nfa_transitions(nfa.states, nfa.alphabet, nfa.transitions)
 
 
-def encode_enum_pairs_sort(S: tuple[Type[Enum], Type[Enum]]) -> z3.Datatype:
-    return z3.EnumSort(
-        f"{S[0].__name__}{S[1].__name__}", [f"{s1.name}{s2.name}" for (s1, s2) in S]
-    )
-
-
 def encode_safetygame_transitions(
-    S: tuple[Type[Enum], Type[Enum]], A: Type[Enum], transitions: set[game.Transition]
+    S: Type[Enum], A: Type[Enum], transitions: set[game.Transition]
 ) -> tuple[z3.Function, z3.And, list[z3.Datatype], list[z3.Datatype]]:
-    state_z3, states = encode_enum_pairs_sort(S)
+    state_z3, states = encode_enum_sort(S)
     alphabet_z3, alphabets = encode_enum_sort(A)
     transition_func = z3.Function(
         "transition", state_z3, alphabet_z3, state_z3, z3.BoolSort()

@@ -81,7 +81,7 @@ def compile_spec(formula: LTLFormula) -> NFA:
     process_formula(formula, start_state, final_state)
 
     States = Enum("States", states)
-    Alphabet = Enum("Alphabet", alphabet)
+    Alphabet = Enum("Alphabet", list(set(alphabet)))
     transitions = {
         Transition(
             getattr(States, s), getattr(Alphabet, letter), getattr(States, output)

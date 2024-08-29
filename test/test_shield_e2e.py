@@ -7,10 +7,11 @@ from shieldpy.automata.game import SafetyGame
 from shieldpy.smt.encoding import encode_safetygame
 
 
-@pytest.mark.skip(reason="Not implemented")
+# @pytest.mark.skip(reason="Not implemented")
 def test_shield(simple_nfa, simple_spec):
+    nfa1,_,_ = simple_nfa
     safety_automaton = compile_spec(simple_spec)
-    game = product(simple_nfa, safety_automaton)
+    game = product(nfa1, safety_automaton)
     transition_func, constraints, states, alphabet = encode_safetygame(game)
 
     s = z3.Solver()

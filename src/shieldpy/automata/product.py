@@ -2,6 +2,7 @@ from shieldpy.automata.nondeterministic_finite import NFA, Transition
 from shieldpy.logic.syntax import LTLFormula
 from shieldpy.compiler import compile_spec
 from shieldpy.automata.game import SafetyGame
+from enum import Enum
 
 
 def product(nfa1: NFA, nfa2: NFA) -> SafetyGame:
@@ -11,12 +12,14 @@ def product(nfa1: NFA, nfa2: NFA) -> SafetyGame:
     The product of two NFAs is another NFA that accepts the intersection of the
     languages of the two NFAs.
     """
-    states = frozenset((s1, s2) for s1 in nfa1.states for s2 in nfa2.states)
+    SafetyState = Enum("SafetyState", [f"{s1.name}_{s2.name}" for s1 in nfa1.states for s2 in nfa2.states])
     # TODO The alphabet should be the intersection
     # However we use the same enum so I think we can use the alphabet of any nfa?
-    alphabets = nfa1.alphabet
-    initial_states = (nfa1.start, nfa2.start)
-    safe_states = frozenset((s1, s2) for s1 in nfa1.accept for s2 in nfa2.accept)
+    alphabets = Enum("ProductAlphabet", list(set([a.name for a in nfa1.alphabet]).intersection(set([a.name for a in nfa2.alphabet]))))
+    # TODO I think this is actual multiple initial states for product automata
+    initial_states = frozenset([getattr(SafetyState, f"{nfa1.start.name}_{nfa2.start.name}")])
+
+    safe_states = frozenset(map(lambda s: getattr(SafetyState, s), [f"{s1.name}_{s2.name}" for s1 in nfa1.accept for s2 in nfa2.accept]))
 
     transitions = []
     for t1 in nfa1.transitions:
@@ -31,7 +34,7 @@ def product(nfa1: NFA, nfa2: NFA) -> SafetyGame:
                 )
 
     return prune(
-        SafetyGame(states, transitions, initial_states, safe_states, alphabets)
+        SafetyGame(SafetyState, transitions, initial_states, safe_states, alphabets)
     )
 
 
