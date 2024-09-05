@@ -10,5 +10,17 @@
 #   universal: false
 
 -e file:.
+cloudpickle==3.0.0
+    # via gymnasium
+farama-notifications==0.0.4
+    # via gymnasium
+gymnasium==0.29.1
+    # via shieldpy
+numpy==2.1.0
+    # via gymnasium
+pygame==2.6.0
+    # via gymnasium
+typing-extensions==4.12.2
+    # via gymnasium
 z3-solver==4.13.0.0
     # via shieldpy
