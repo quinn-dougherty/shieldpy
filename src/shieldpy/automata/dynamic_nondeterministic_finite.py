@@ -72,25 +72,3 @@ class DynamicNFA:
             if not current_states:
                 return False
         return any(state in self.accept for state in current_states)
-
-
-# Usage example
-nfa = DynamicNFA()
-
-# Add states
-q0, q1, q2 = State("q0"), State("q1"), State("q2")
-
-# Add symbols
-a, b = Alphabet("a"), Alphabet("b")
-
-# Add transitions
-nfa.add_transition(q0, a, q0)
-nfa.add_transition(q0, a, q1)
-nfa.add_transition(q1, b, q2)
-
-# Set accept state
-nfa.set_accept_state(q2)
-
-# Test acceptance
-print(nfa.accepts("aab"))  # Should print True
-print(nfa.accepts("ab"))  # Should print False
