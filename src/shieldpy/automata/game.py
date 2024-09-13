@@ -1,6 +1,7 @@
 from dataclasses import dataclass
 from shieldpy.automata.types import State, Alphabet
 
+
 @dataclass(frozen=True)
 class Transition:
     """
