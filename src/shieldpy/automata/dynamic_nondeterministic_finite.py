@@ -1,5 +1,5 @@
 from dataclasses import dataclass, field
-from typing import Set, FrozenSet, Type
+from typing import Set
 
 
 @dataclass(frozen=True)

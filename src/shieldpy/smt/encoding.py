@@ -2,7 +2,6 @@ from enum import Enum
 from typing import Type
 
 from shieldpy.automata import nondeterministic_finite as nfa
-from shieldpy.automata.types import Alphabet, State
 from shieldpy.automata import game
 
 import z3
