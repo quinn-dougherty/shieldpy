@@ -47,8 +47,10 @@ watertank_nfa = NFA(
 
 open_ = atom("OPEN")
 close = atom("CLOSE")
-levelUnder100 = atom("level < 100")
-levelOver0 = atom("level > 0")
+
+validStates = [atom(x.name) for x in WaterTankState.members] # [q_0, q_1, ..., q_99]
+
+neverEmpty = always(not_(atom("q_0"))
 
 openThenClosed = and_(open_, next_(close))
 
