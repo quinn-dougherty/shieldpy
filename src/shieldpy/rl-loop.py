@@ -2,12 +2,11 @@ from ray.rllib.algorithms.ppo import PPOConfig
 from ray.rllib.algorithms.algorithm import Algorithm
 from shieldpy.environments.gymnasium.interface import DynNFAGymWrapper
 from shieldpy.automata.dynamic_nondeterministic_finite import DynamicNFA
+import gymnasium as gym
 import os
 
 # TODO LTL stuff?
-def postPostedShield(algo: Algorithm):
-
-    cartPoleEnv = gym.make("CartPole-v1")
+def postPostedShield(algo: Algorithm, env):
     nfa = DynamicNFA()
     env = DynNFAGymWrapper(cartPoleEnv, nfa)
 
@@ -23,20 +22,22 @@ def postPostedShield(algo: Algorithm):
         total_reward += reward
         print("observations, reward, done, info",observations, reward, done, info)
 
-cartPoleCheckpoint = "./cartPoleCheckpoint"
-
-def train():
-    config = PPOConfig().environment(env="CartPole-v1").training(train_batch_size=4000)
+def train(config, checkpoint: str):
     ppo = config.build()
     numTrainingLoop = 500
     for _ in range(numTrainingLoop):
         ppo.train()
-    ppo.save(cartPoleCheckpoint)
+    ppo.save(checkpoint)
 
+# CartPole
+
+cartPoleCheckpoint = "./cartPoleCheckpoint"
 # Check if checkpoint exists
 if os.path.isfile(cartPoleCheckpoint):
-    algo = train()
+    config = PPOConfig().environment(env="CartPole-v1").training(train_batch_size=4000)
+    algo = train(config, cartPoleCheckpoint)
 else:
     algo = Algorithm.from_checkpoint(cartPoleCheckpoint)
 
-postPostedShield(algo)
+env = gym.make("CartPole-v1")
+postPostedShield(algo, env)
