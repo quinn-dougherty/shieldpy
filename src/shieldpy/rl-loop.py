@@ -6,21 +6,42 @@ import gymnasium as gym
 import os
 
 # TODO LTL stuff?
-def postPostedShield(algo: Algorithm, env):
-    nfa = DynamicNFA()
-    env = DynNFAGymWrapper(cartPoleEnv, nfa)
+def postPostedShield(algo: Algorithm, env, spec):
+    wrappedEnv = DynNFAGymWrapper(env,DynamicNFA())
 
     done = False
     total_reward = 0
-    observations = env.reset()
+    observations = wrappedEnv.reset()
+    # This is to form the initial dynamic NFA
     while not done:
         # Learning agent proposes action
         action = algo.compute_single_action(observations)
         # Shield checks if action is safe
         # TODO maybe this is in step?
-        observations, reward, done, info = env.step(action)
+        observations, reward, done, info = wrappedEnv.step(action)
         total_reward += reward
         print("observations, reward, done, info",observations, reward, done, info)
+
+    # Now we have some dynamic nfa and we can do a product on the compiled LTL nfa
+    specNfa = compile_spec(spec)
+    productNfa = product(wrappedEnv.nfa, specNfa)
+
+    done = False
+    total_reward = 0
+    observations = wrappedEnv.reset()
+    # TODO freeze wrapped env so it doesn't evolve the nfa
+
+    # Actual shielding loop
+    while not done:
+        # Learning agent proposes action
+        action = algo.compute_single_action(observations)
+        # Shield checks if action is safe
+        # TODO maybe this is in step?
+        observations, reward, done, info = wrappedEnv.step(action)
+        total_reward += reward
+        print("observations, reward, done, info",observations, reward, done, info)
+
+
 
 def train(config, checkpoint: str):
     ppo = config.build()
