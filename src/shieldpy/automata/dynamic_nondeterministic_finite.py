@@ -59,6 +59,8 @@ class DynamicNFA:
                 next_states.add(transition.end)
         return next_states
 
+    # TODO change the signature so it accepts an epsilon
+    #
     def accepts(self, word: Word) -> bool:
         current_states = {self.start}
         for symbol in word:
@@ -71,4 +73,5 @@ class DynamicNFA:
             current_states = next_states
             if not current_states:
                 return False
+        # Change the in to "in neighborhood of accept states"
         return any(state in self.accept for state in current_states)

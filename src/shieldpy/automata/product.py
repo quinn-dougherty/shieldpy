@@ -31,6 +31,7 @@ def product(nfa1: NFA, nfa2: NFA) -> SafetyGame:
         [getattr(SafetyState, f"{nfa1.start.name}_{nfa2.start.name}")]
     )
 
+    # TODO I think this is just accepting states. Safe states are states that perhaps Z3 finds to be safe?
     safe_states = frozenset(
         map(
             lambda s: getattr(SafetyState, s),
