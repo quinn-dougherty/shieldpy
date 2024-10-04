@@ -37,6 +37,7 @@ ghc-options:
 
 default-extensions:
 - UnicodeSyntax
+- RecordDotSyntax
 - DataKinds
 - LambdaCase
 - BlockArguments

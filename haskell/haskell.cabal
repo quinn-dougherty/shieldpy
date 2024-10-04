@@ -34,6 +34,7 @@ library
       src
   default-extensions:
       UnicodeSyntax
+      RecordDotSyntax
       DataKinds
       LambdaCase
       BlockArguments
@@ -54,6 +55,7 @@ executable haskell-exe
       app
   default-extensions:
       UnicodeSyntax
+      RecordDotSyntax
       DataKinds
       LambdaCase
       BlockArguments
@@ -76,6 +78,7 @@ test-suite haskell-test
       test
   default-extensions:
       UnicodeSyntax
+      RecordDotSyntax
       DataKinds
       LambdaCase
       BlockArguments
