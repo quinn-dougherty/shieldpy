@@ -36,15 +36,26 @@ data Q = Q Int deriving (Show, Eq, Ord)
 -- Transition
 type Transition _Σᵢ = (Q, _Σᵢ) → _Σᵢ
 
--- S: A finite state reactive system
-data Shield _Σᵢ _Σ₀ = Shield {
+-- | S: A finite state reactive system
+-- _Σᵢ: Input alphabet
+-- _Σᵢ = _Σᵢ¹ x _Σᵢ²
+-- _Σ₀: Output alphabet
+data S _Σᵢ¹ _Σᵢ² _Σ₀ = S {
+  -- Finite set of states
   _Q :: Set Q
+  -- Initial state
   , q₀ :: Q
+  -- Input alphabet
   , _Σᵢ :: _Σᵢ
+  -- Output alphabet
   , _Σ₀ :: _Σ₀
-  , δ :: Transition _Σᵢ
-  -- TODO , λ
+  -- Transition function
+  , δ :: (Q, _Σᵢ) → _Σᵢ
+  -- Complete output function
+  , λ :: (Q, _Σᵢ) → _Σ₀
   }
+
+type Shield
 
 -- Safety automation φˢ
 data SafetyAutomation _Σ = SafetyAutomation {
@@ -107,8 +118,8 @@ data LTL
 exampleLtlFormula :: LTL
 exampleLtlFormula = G ( AP "r" ||| X (AP "g"))
 
-waterTankExampleLtlFormula = G (AP "level > 0") &&& G (AP "level < 100") &&&
-                                -- TODO G ((AP "open" &&& X (AP "close")) --> (X X (AP "close") &&& XXX (AP "close")))
+waterTankExampleLtlFormula = G (AP "level > 0") &&& G (AP "level < 100")
+   -- TOOD &&& G ((AP "open" &&& X (AP "close")) --> (X X (AP "close") &&& XXX (AP "close")))
 
 -- | A trace I think?
 type Trace = [Set Prop]
@@ -147,3 +158,14 @@ satisfies σ idx formula = case formula of
 -- Where A is the boolean 'Actions' in the MDP
 -- preemptiveShieldIter :: (L, A) -> Set A
 -- preemptiveShieldIter (l, a) = undefined
+
+-- Label set e.g. {level < 1, 1 ≤ level ≤ 99, level > 99}
+type L = Set Prop
+
+
+-- | Water Tank Example
+watertankL :: L
+watertankL = Set.fromList ["level < 1", "1 ≤ level ≤ 99", "level > 99"]
+
+-- waterTankA :: A
+-- waterTankA = Set.fromList [ "opened", "closed"]
