@@ -5,8 +5,29 @@ module Lib where
 
 import Data.Set (Set)
 
+-- TODOs
+-- Maybe start more top down instead so look at later pages and try to implement backwards.
+-- I did the other approach and it was a bit harder to follow.
+-- Maybe starting at preemptive shield which uses MDPs which then appl6y a shield to the actions (removing unsafe actions might make more sense)
+-- OR do safety games but that's used in the above. If I struggle with the above I'll try this.
+
+
 -- | Credits to TODO
 -- Just guessing the types or stubbing them
+
+-- | Unicode characters
+-- You can setup latex input mode in emacs to use these
+-- φ \varphi Specification
+-- φˢ Safety automation
+-- φᵐ MDP abstraction
+-- Σ \Sigma Alphabet sometimes composed of the input and output alphabet Σ = Σᵢ x Σₒ
+-- Σᵢ \Sigma_i Input alphabet
+-- Σₒ \Sigma_o Output alphabet
+-- δ \delta Transition function
+-- ρ \rho
+-- λ \lambda Output function
+-- Gω G\omega Really G with a supper script omega
+-- Many of these are described in section 3 Preliminaries
 
 -- | MDP States
 data S = S Int
@@ -22,6 +43,7 @@ type R = (S, A, S) -> Float
 
 
 -- | Markov Decision Process
+-- I wonder if we even need this given they start talking about an abstraction over the MDP φ
 data M = M {
   _S :: Set S
   , sᵢ :: S -- Initial state
@@ -32,9 +54,6 @@ data M = M {
 
 -- Automata States
 data Q = Q Int deriving (Show, Eq, Ord)
-
--- Transition
-type Transition _Σᵢ = (Q, _Σᵢ) → _Σᵢ
 
 -- | S: A finite state reactive system
 -- _Σᵢ: Input alphabet
@@ -55,16 +74,30 @@ data S _Σᵢ¹ _Σᵢ² _Σ₀ = S {
   , λ :: (Q, _Σᵢ) → _Σ₀
   }
 
-type Shield
+
 
 -- Safety automation φˢ
-data SafetyAutomation _Σ = SafetyAutomation {
-  q :: Set Q
+-- The System S satisfies the automation if the run of S only visits safe states in F
+data SafetyAutomation _Σᵢ¹ _Σᵢ² = SafetyAutomation {
+  q :: Set Q -- States
   , q₀:: Q
   , _Σ :: _Σ
-  , δ :: Transition _Σ
-  , _F :: Set Q -- Set of safe states
+  , δ :: (Q, (_Σᵢ¹, _Σᵢ²)) -> Q
+  , _F :: Set Q -- Set of safe states where F ⊆ Q
   }
+
+
+-- | 2 player Game
+-- G: TODO  Game states guessing that's a product of states from the environment and safety automation?
+data Game G = Game {
+    _G :: Set G -- Finite set of game states
+    , q₀ :: G -- Initial state
+    , δ :: (G, Σᵢ, Σₒ) -> G -- Transition function
+    , win :: Gω
+
+  
+                 }
+
 -- | Used for synthesizing the shield
 -- Defines a set Fᵍ  ⊆ G of safe states
 -- Where win(g₀, g₁, ...) iff ∀i ≥ 0. gᵢ ∈ Fᵍ
@@ -72,9 +105,9 @@ data SafetyAutomation _Σ = SafetyAutomation {
 -- safetyGame ∷ G -> G
 -- safetyGame g = undefined
 
-  -- | Uses the safety game to synthesize a shield which implements the winning strategy in a new reactive system (Is it a finite reactive system?)
-shield  ∷ Shield _Σᵢ _Σ₀
-shield =
+
+safetyGame ∷ S _Σᵢ¹ _Σᵢ² _Σ₀ -> SafetyAutomation -> S _ _
+safetyGame=
     let g = undefined
         q = undefined
         _Σᵢ = undefined
@@ -82,6 +115,16 @@ shield =
         δ' = undefined -- (g, σᵢ ) = (g, σᵢ, ρ(g, σᵢ))
         ρ = undefined
     in undefined -- TODO S q _Σᵢ _Σₒ δ'
+  -- | Uses the safety game to synthesize a shield which implements the winning strategy in a new reactive system (Is it a finite reactive system?)
+-- shield  ∷ Shield _Σᵢ _Σ₀
+-- shield =
+--     let g = undefined
+--         q = undefined
+--         _Σᵢ = undefined
+--         _Σₒ= undefined
+--         δ' = undefined -- (g, σᵢ ) = (g, σᵢ, ρ(g, σᵢ))
+--         ρ = undefined
+--     in undefined -- TODO S q _Σᵢ _Σₒ δ'
 
 type Σ = Set Int
 
@@ -158,6 +201,24 @@ satisfies σ idx formula = case formula of
 -- Where A is the boolean 'Actions' in the MDP
 -- preemptiveShieldIter :: (L, A) -> Set A
 -- preemptiveShieldIter (l, a) = undefined
+
+-- This is actually properties of the shield maybe not what we want
+-- But overall it can also be seem as transforming a MDP into a new MDP (section 5.1)
+preemptiveShield :: M -> Shield -> M
+preemptiveShield _M _S =
+  -- Product of the original MDP and the state space of the shield
+  let _S' = undefined
+      -- For each s' in S' create a new subset of available actions
+      -- Apply the shield to Aₛ to get A'ₛ
+      -- So that gets us a bunch of A'ₛ but how do we get A'?
+      _A' = undefined
+      -- We only want transition functions from P for actions in A'ₛ
+      _P' = undefined
+      _R' = undefined
+  in M _S' M.s_i  _A' _P' _R'
+
+-- | Section 6 a shield is computed from an abstraction of the MDP φᵐ and the safety automaton φˢ
+computeShield
 
 -- Label set e.g. {level < 1, 1 ≤ level ≤ 99, level > 99}
 type L = Set Prop
